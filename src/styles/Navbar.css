@@ -1,0 +1,17 @@
+.nav-link {
+    font-size: 20px;
+    color: rgb(188, 208, 218);
+    transition: text-shadow 0.2s ease-in-out;
+}
+
+.nav-link:hover,.nav-link:active {
+    font-size: 21.5px;
+    color: rgb(38, 92, 187);
+    text-shadow: 2px 2px 9px rgba(3, 162, 255, 0.7);
+    transform: scaleX(1.1);
+}
+.nav-top{
+    position: sticky;
+    top: 0; 
+    z-index: 1000;
+}

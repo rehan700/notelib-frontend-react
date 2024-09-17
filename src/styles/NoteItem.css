@@ -1,0 +1,12 @@
+.pointer{
+    cursor: pointer;
+}
+.form-style{
+    border: 2px solid black;
+}
+.edit-button-text{
+    visibility: hidden;
+}
+.edit-button:hover,.edit-button-text{
+    visibility: visible;
+}
