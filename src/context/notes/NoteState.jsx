@@ -1,20 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NoteContext from './NoteContext'
 import axios from 'axios'
 export default function NoteState(props) {
-  const [username, setName] = useState('')
-  const getUserDetails = () => {
-    axios.post('/api/auth/getuser', {}, {
-      headers: {
-        'auth-token': localStorage.getItem('auth-token'),
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((res) =>
-        setName(res.data.name)
+  const [name, setName] = useState('')
+
+  const userDetails = (token) => {
+    //const token = localStorage.getItem('auth-token')
+
+    
+      const controller = new AbortController();
+      axios.post(
+        '/api/auth/getuser',
+        {},
+        {
+          headers: {
+            'auth-token': token,
+            'Content-Type': 'application/json'
+          },
+          signal: controller.signal
+        }
       )
-      .catch((err) => console.error(err));
+        .then((res) => setName(res.data.name))
+        .catch((err) => {
+          if (err.name === 'AbortError') {
+            console.log('Request was aborted');
+          } else {
+            console.error(err);
+          }
+        });
+
+      return () => controller.abort();
+    
+
   }
+
   const fetchAllNotes = () => {
     axios.get('/api/notes/fetchnotes', {
       headers: {
@@ -24,6 +43,7 @@ export default function NoteState(props) {
     })
       .then((res) => {
         setNotes(res.data)
+
       }
       )
       .catch((err) => console.error(err));
@@ -87,7 +107,7 @@ export default function NoteState(props) {
   return (
     <NoteContext.Provider value={{
       notes, setNotes, addNote, deleteNote, updateNote, fetchAllNotes,
-      handleSearch, searchQuery, isPresent, username, getUserDetails
+      handleSearch, searchQuery, isPresent, name, userDetails
     }}>
       {props.children}
     </NoteContext.Provider>

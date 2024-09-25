@@ -28,9 +28,9 @@ export default function Login(props) {
             .then((response) => {
                 if (response.data.success) {
                     localStorage.setItem('auth-token', response.data.jwtToken)
-                    notes.getUserDetails()
-                    props.showAlert(`Welcome back! ${notes.username}`)
                     navigate('/')
+                    notes.userDetails(response.data.jwtToken)
+                    props.showAlert(`Welcome back ${notes.name}`)
                     setCredential({
                         email: '',
                         password: ''

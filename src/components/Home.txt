@@ -93,15 +93,66 @@ export default function Home(props) {
         border: '3px solid black',
         borderRadius: '6px',
       }}>
-        
-           
-          
+        <div className="container" style={{ 
+          display: 'flex', 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          marginLeft:'2.4rem',
+           }}>
+          <button
+            style={{
+              height: '7.7rem', // Larger height for better circular shape
+              width: '8.1rem',  // Width same as height for perfect circle
+              marginTop: '1rem',
+              borderRadius: '50%', // 50% for a circle
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '7rem', // Adjust font size for responsive button text
+              marginLeft:'0.2rem',
+              marginRight:'1rem',
+              
+            }}
+            className="btn btn-primary"
+          >
+           <strong>
+           <p style={{marginTop:'2px'}}>+</p>
+            </strong>
+          </button>
 
-          
-                
-        <div className="row" style={{ marginRight: '5px' }}>
+          <div className="notes-container row" style={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            marginRight: '1.5rem',
+            marginLeft:'4rem',
+            border:'1px solid black',
+            gap:'5rem'
+             }}>
+            {mynotes.notes.length === 0 && <h6 className="text-center">No notes to display</h6>}
+
+            {mynotes.notes.map((note, index) => {
+              if (index < 3) {
+                return (
+                  <div className="col-md-3 note-item" style={{ marginRight:'5px'}} key={index}>
+                    <NoteItem
+                      title={note.title}
+                      description={note.description}
+                      tag={note.tag}
+                      deleteId={note._id}
+                      index={index}
+                      flag={mynotes.isPresent(note)}
+                    />
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+
+        <div className="row" style={{ marginRight: '5px',marginTop:'-1rem' }}>
           {mynotes.notes.map((note, index) => {
-            
+            if (index >= 3) {
               return (
                 <div className="col-md-3" key={index}>
                   <NoteItem
@@ -114,7 +165,7 @@ export default function Home(props) {
                   />
                 </div>
               )
-            
+            }
           })}
 
         </div>

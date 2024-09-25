@@ -4,7 +4,8 @@ import '../styles/Navbar.css'
 import { FaSearch, FaUser } from 'react-icons/fa';
 import NoteContext from '../context/notes/NoteContext';
 
-export default function Navbar() {
+export default function Navbar(props) {
+  const {name}=props
   let location = useLocation();
   const navigate = useNavigate()
   React.useEffect(() => {
@@ -45,7 +46,7 @@ export default function Navbar() {
           {!localStorage.getItem('auth-token') ? <div style={{ display: 'flex' }}>
             <Link className='nav-link mx-1' to='/login'> <button type="button" className="btn btn-info">Login</button></Link>
             <Link className='nav-link mx-1' to='/signup'> <button type="button" className="btn btn-info">Sign-up</button></Link>
-          </div> :<div style={{display:'flex'}} ><h5 style={{color:'white',marginTop:'6px'}}>{notes.username}</h5><div className="dropdown">
+          </div> :<div style={{display:'flex'}} ><h5 style={{color:'white',marginTop:'6px'}}>{notes.name}</h5><div className="dropdown">
             <FaUser type='button'
             className='mx-3'
              style={{ color: 'red', fontSize: '1.65rem' }}
@@ -53,6 +54,8 @@ export default function Navbar() {
             <ul className="dropdown-menu dropdown-menu-end">
               <li onClick={() => {
                 localStorage.removeItem('auth-token')
+                //localStorage.setItem('auth-token','')
+
                 navigate('/login')
               }}><a className="dropdown-item" href="#">Logout</a></li>
               <li><a className="dropdown-item" href="#">Another action</a></li>

@@ -6,9 +6,9 @@ import '../styles/SignUp.css'
 import NoteContext from '../context/notes/NoteContext'
 export default function SignUp(props) {
   let navigate = useNavigate()
-  const notes=useContext(NoteContext)
+  const notes = useContext(NoteContext)
   const confirmPasswordRef = useRef()
-  const [alert,setAlert]=useState('')
+  const [alert, setAlert] = useState('')
   const [credentials, setCredential] = useState({
     name: '',
     email: '',
@@ -29,12 +29,12 @@ export default function SignUp(props) {
       },
     })
       .then((response) => {
-        const { err, errors,message,jwtToken } = response.data; // Destructure data from response
+        const { err, errors, message, jwtToken } = response.data; // Destructure data from response
         if (err === 3) {
-          localStorage.setItem('auth-token',jwtToken)
-          notes.getUserDetails()
-          props.showAlert(`Welcome to Notes Planet, ${notes.username}`)
+          localStorage.setItem('auth-token', jwtToken)
           navigate('/')
+          notes.userDetails(response.data.jwtToken)
+          props.showAlert(`Welcome back ${notes.name}`)
           setCredential({
             name: '',
             email: '',
@@ -58,16 +58,16 @@ export default function SignUp(props) {
         setAlert('An error occurred. Please try again.');
       });
   }
-  
+
 
   const handleOnSubmit = (event) => {
     event.preventDefault()
     if (credentials.password === credentials.confirmPassword) {
       signUpUser(credentials.name, credentials.email, credentials.password)
-      confirmPasswordRef.current.innerHTML=''
+      confirmPasswordRef.current.innerHTML = ''
     }
     else {
-      confirmPasswordRef.current.innerHTML='Passwords do not match'
+      confirmPasswordRef.current.innerHTML = 'Passwords do not match'
     }
 
   }
@@ -78,7 +78,7 @@ export default function SignUp(props) {
           <div className='col-md-6'>
             <h1 className="text-center mb-3">Sign up</h1>
             <form className="p-4 border rounded" onSubmit={handleOnSubmit}>
-            {alert && <div className="alert alert-danger alert-shake" role="alert">{alert}</div>}
+              {alert && <div className="alert alert-danger alert-shake" role="alert">{alert}</div>}
               <div className="mb-3">
                 <label htmlFor="exampleInputName" className="form-label">Name</label>
                 <input type="text" name='name' value={credentials.name} onChange={handleOnChange} className="form-control input-style" id="exampleInputName" aria-describedby="emailHelp" />
@@ -92,14 +92,14 @@ export default function SignUp(props) {
                 <label htmlFor="exampleInputPassword1" className="form-label">
                   Password
                 </label>
-                <PasswordInput password={credentials.password} handleOnChange={handleOnChange} inputName='password'/>
+                <PasswordInput password={credentials.password} handleOnChange={handleOnChange} inputName='password' />
               </div>
               <div className="mb-3">
                 <label htmlFor="exampleInputPassword1" className="form-label">
                   Confirm Password
                 </label>
                 <PasswordInput password={credentials.confirmPassword} handleOnChange={handleOnChange} inputName='confirmPassword' />
-                <div id="emailHelp" className="form-text" ref={confirmPasswordRef} style={{color:'red'}}></div>
+                <div id="emailHelp" className="form-text" ref={confirmPasswordRef} style={{ color: 'red' }}></div>
               </div>
               <div className="mb-3 form-check">
                 <input type="checkbox" className="form-check-input" id="exampleCheck1" />
